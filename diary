@@ -1,0 +1,45 @@
+*** The Path to Huffman ***
+
+Huffman coding: 
+	- Lossless data compression algorithm.
+	- Data is compressed to variable-length codes (VLC).
+	- It uses symbol's frequencies (probabilities) of occurrence.
+	- The more common symbols are represented with fewer bits.
+
+Input:
+	- A = (a1, a2, a3,.., an) -> symbols
+	- W = (w1, w2, w3,..., wn) -> weights = frequencies = probabilities
+
+Output:
+	- C(W) = (c1, c2, c3,..., cn) -> binary codewords, ci = codeword ai
+
+What I need?
+- A sorted array with every symbol and its frequency (priority queue)
+
+- A binary tree ->
+	- Nodes:
+	-> Leaf: symbol, weight, parent node
+	-> Internal: symbol, weight, [ children (2) | parent node ]
+
+- How the hell I store the tree after building it? So the decompressor can do its thing. Answer: Build a lookup table.
+
+Options for implementation: 
+		- A priority queue with nodes of the form (count, value) and through poping the queue composing nodes until the only node left in the queue is the root.
+
+Finished!
+
+Conclussions:
+
+After struggling a lot with the data structures to use for implementing the encoder I can conclude that:
+
+	- The algorithm is easy to understand.
+	- If you have the right data structures all will be fine.
+	- The biggest problem to implement this algorithm is choosing which data structures to use. I lose like 3 hours looking for a priority queue in Go and the right structure for interfaces and structs in order to get a good result.
+	Sometimes tools slow your workflow... Maybe you have in your mind all you need to build something, but it takes a lot of time to choose the right tools and then make all work.
+
+TODOS:
+	- CLI facilities
+	- decompressor
+	- compression ratios
+	- entropy calculations
+	- building the lookup table and save it
