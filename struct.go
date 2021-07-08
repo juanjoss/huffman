@@ -1,6 +1,9 @@
 package main
 
-import "container/heap"
+import (
+	"container/heap"
+	"fmt"
+)
 
 type Tree interface {
 	Freq() int
@@ -66,4 +69,28 @@ func encode(symFreq map[rune]int) Tree {
 	return heap.Pop(&tree).(Tree)
 }
 
+// decodig
+
+func decode(tree Tree) map[rune]int {
+	return nil
+}
+
 // build lookup table
+
+func printCodes(tree Tree, code []byte) {
+	switch node := tree.(type) {
+	case Leaf:
+		fmt.Printf("%c\t%d\t%s\n", node.value, node.freq, string(code))
+
+	case Node:
+		// left
+		code = append(code, '0')
+		printCodes(node, code)
+		code = code[:len(code)-1]
+
+		// right
+		code = append(code, '1')
+		printCodes(node, code)
+		code = code[:len(code)-1]
+	}
+}

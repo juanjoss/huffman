@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 )
 
 func main() {
-	data, err := ioutil.ReadFile("./data.txt")
+	data, err := ioutil.ReadFile("./test_files/data.txt")
 	if err != nil {
 		panic(err)
 	}
@@ -18,5 +17,6 @@ func main() {
 	}
 
 	tree := encode(symFreq)
-	fmt.Println(tree)
+
+	printCodes(tree, []byte{})
 }
