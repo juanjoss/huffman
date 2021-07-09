@@ -2,7 +2,6 @@ package encoder
 
 import (
 	"container/heap"
-	"fmt"
 
 	model "github.com/fuato1/huffman/model"
 )
@@ -29,23 +28,25 @@ func Encode(symFreq model.Pairs) model.Tree {
 
 // tree traversal
 
-func BuildStream(tree model.Tree, stream []byte) []byte {
+func BuildLookupTable(tree model.Tree, code []byte, codes map[rune][]byte) map[rune][]byte {
 	switch node := tree.(type) {
 	case model.Leaf:
-		fmt.Printf("%c\t%d\t%s\n", node.Value, node.Freq(), string(stream))
-		return stream
+		//fmt.Printf("%c\t%d\t%s\n", node.Value, node.Freq(), string(code))
+		codes[node.Value] = append(codes[node.Value], code...)
+
+		return codes
 
 	case model.Node:
 		// left
-		stream = append(stream, '0')
-		stream = append(stream, BuildStream(node.Left, stream)...)
-		stream = stream[:len(stream)-1]
+		code = append(code, '0')
+		codes = BuildLookupTable(node.Left, code, codes)
+		code = code[:len(code)-1]
 
 		// right
-		stream = append(stream, '1')
-		stream = append(stream, BuildStream(node.Right, stream)...)
-		stream = stream[:len(stream)-1]
+		code = append(code, '1')
+		codes = BuildLookupTable(node.Right, code, codes)
+		code = code[:len(code)-1]
 	}
 
-	return stream
+	return codes
 }
