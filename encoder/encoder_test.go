@@ -9,6 +9,12 @@ import (
 	model "github.com/fuato1/huffman/model"
 )
 
+/*
+	This test just takes care of comparing the encoded data
+	with the expected theoretical result, and doesn't tests
+	the generated e.Stream (HUFF_NUMBER + header + body + PSEUDO_EOF)
+	of bits which are written to the file after encoding.
+*/
 func TestEncoder(t *testing.T) {
 	// suite
 	suite := map[string][]byte{
@@ -38,11 +44,28 @@ func TestEncoder(t *testing.T) {
 		sort.Sort(pairs)
 
 		// encoding
-		tree := Encode(pairs)
-		stream := BuildStream(tree, []byte{})
+		enc := NewEncoder()
+		tree := enc.Encode(pairs)
+		codes := enc.BuildLookupTable(tree)
+		enc.SaveEncodedData("./data", data, codes)
+
+		// encoding data
+		var stream []byte
+		for _, c := range data {
+			if c != '\n' {
+				if codes[rune(c)] != nil {
+					for _, b := range codes[rune(c)] {
+						if b == '0' {
+							stream = append(stream, '0')
+						} else {
+							stream = append(stream, '1')
+						}
+					}
+				}
+			}
+		}
 
 		// assert
-		// expected = 1 1 1 01 01 00
 		if bytes.Compare(expected, stream) != 0 {
 			t.Errorf("test %s failed: \n\tresult: %s\n\texpected: %s", file, stream, expected)
 		}

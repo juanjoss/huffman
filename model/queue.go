@@ -1,7 +1,5 @@
 package model
 
-// queue
-
 type PriorityQueue []Tree
 
 func (pq PriorityQueue) Len() int { return len(pq) }

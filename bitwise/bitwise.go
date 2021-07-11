@@ -1,4 +1,4 @@
-package bitwise
+package bits
 
 import (
 	"bufio"
@@ -64,9 +64,9 @@ func (w *Writer) writeMSB(c uint32, width uint) error {
 	return nil
 }
 
-func (w *Writer) WriteBits(c uint16, width uint) error {
+func (w *Writer) WriteBits(c uint32, width uint) error {
 	if w.err == nil {
-		w.err = w.write(uint32(c), width)
+		w.err = w.write(c, width)
 	}
 
 	return w.err

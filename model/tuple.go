@@ -1,8 +1,8 @@
 package model
 
 /*
-	custom structure to build a sortered slice
-	of (symbol, frequency).
+	Used to build the list with the frequencies of
+	each symbol in the data to be compressed.
 */
 
 type Pair struct {
